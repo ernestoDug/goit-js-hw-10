@@ -1,13 +1,16 @@
-import axios from 'axios';
+import axios from 'axios'
+import {fetchBreeds} from './cat-api.js'
 
-const API_KEY = 'https://api.thecatapi.com/v1/breeds'
-
+const BASE_URL = 'https://api.thecatapi.com/v1/breeds';
+const MY_KEY = "axios.defaults.headers.common['x-api-key']=live_Bvmmb25LUgn0kerowwQa8P9jXzhxZ7PQweZaoNBCqAfNembGTRKEXQZy885vOj5o";
+fetchBreeds();
+// селект
 const selectVar = document.querySelector(".breed-select");
+// вантажник
 const gg = document.querySelector(".loader");
-// selectVar.innerHTML = '';
+// слухач седекта
 selectVar.addEventListener('click', onChange);
 
-  fetchBreeds();
 
 
 
@@ -17,15 +20,3 @@ function onChange (event)
 }
 
 
-// запит1
- function fetchBreeds() {
-axios
-.get("https://api.thecatapi.com/v1/breeds?axios.defaults.headers.common['x-api-key']=live_Bvmmb25LUgn0kerowwQa8P9jXzhxZ7PQweZaoNBCqAfNembGTRKEXQZy885vOj5o")
-.then(response => {
-      console.log("bhjbjh", response.data);
-    response.data.map(({id, name}) =>{
-// додаю до селекту опції
-      return  selectVar.add(new Option(`${name}`,`${id}`))
-            })
-          })
-         }

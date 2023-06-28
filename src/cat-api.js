@@ -1,4 +1,5 @@
 import axios, {isCancel, AxiosError} from 'axios'
+import { io } from './index.js'
 const BASE_URL = 'https://api.thecatapi.com/v1/breeds';
 const MY_KEY = "axios.defaults.headers.common['x-api-key']=live_Bvmmb25LUgn0kerowwQa8P9jXzhxZ7PQweZaoNBCqAfNembGTRKEXQZy885vOj5o";
 const selectVar = document.querySelector(".breed-select");
@@ -14,11 +15,15 @@ const selectVar = document.querySelector(".breed-select");
       }
     })
     .then(response => {
-        response.data.map(({id, name}) =>{
+        // response.data.map(({id, name, description, temperament}) =>{
     // додаємо до селекту опції
-          return  selectVar.add(new Option(`${name}`,`${id}`))
-                })
+    console.log("even,,", response.data)
+          // return  selectVar.add(new Option(`${name}`, `${id}`, `${description}`, `${temperament}`))
+          //       })
+          return response.data
               })
+            // })
+            .then(io)
               .catch(error => {
                 alert(error)
            

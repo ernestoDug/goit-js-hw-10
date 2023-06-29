@@ -8,7 +8,7 @@ import { BASE_URL, MY_KEY, selectVar, fetchBreeds } from './cat-api.js'
 const URL_FOR_INFOCAT = "https://api.thecatapi.com/v1/images/search";
 
 const catHub = document.querySelector(".cat-info");
-// const miuD = document.querySelector(".miuDescr");
+const miuD = document.querySelector(".miuDescr");
 // const miuT = document.querySelector(".miuTemper")
 // let dataS = null;
 
@@ -17,7 +17,7 @@ fetchBreeds()
 
 export function selecter (data) {
   // console.log("4545", data)
-  data.map(({id, name, temperament, descriptionz}) =>{
+  data.map(({id, name}) =>{
 // // додаємо до селекту опції
 // console.log("lknn", data)
     selectVar.add(new Option(`${name}`, `${id}`))
@@ -36,27 +36,36 @@ selectVar.addEventListener('change', onChange);
 
 function onChange (event)
 {
-    const id = event.target.value;
+    const idBreed = event.target.value;
     // let des = event.target
-// console.log(responseText, "4654654pppppppppppppp")
-const vib = selectVar.selectedIndex;
-const opt = selectVar.options
+    const vib = selectVar.selectedIndex;
+    const opt = selectVar.options
+    // console.log(id, selectVar.value, vib.text
+    // "4654654pppppppppppppp")
 
     // console.log(opt[vib], "555555555555555555");****************************************
-    console.log(selectVar.value, "na change");
+    console.log(selectVar.value, idBreed,  "na change");
 
-    fetchCatByBreed(id);
+    fetchCatByBreed(idBreed);
   }
-        function fetchCatByBreed(id){
+        function fetchCatByBreed(idBreed){
         axios
-        .get(`https://api.thecatapi.com/v1/images/search?api_key=${MY_KEY}&breeds_ids=${id}&has_breeds=1`)
+        .get(`${URL_FOR_INFOCAT}?api_key=${MY_KEY}&has_breeds=1&breeds_ids=${idBreed}&sub_id`)
                     
         .then(response => {
-            response.data.map(({url}) =>{
+            response.data.map(({url, breeds: [{name, description, temperament}]}) =>{
         // додаємо до селекту опції
-        console.log(response.data, " по айди")
-        catHub.innerHTML = `<img src="${url}"  alt="">`
-// miuD.textContent = "data.description";
+        console.log( response.data, description,"ОПИС", temperament, "ТУМП", name)
+        catHub.innerHTML = 
+        `<div class = "wrapp">
+        <h1 class="catName"> ${name}</h1>
+       <h2 class="catDescr"> ${description}</h2>
+       <h3 class="catTemp">${temperament}</h3>
+       </div>
+       <div class="photoCatWrap"> <img class="catPortret" src="${url}" alt="${name}"</div>`
+
+        //  = `<img src="${url}"  alt="${name}">`
+        //  miuD.textContent = description;
 // console.log(data.description)
         
                     })

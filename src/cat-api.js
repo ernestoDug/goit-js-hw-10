@@ -1,5 +1,6 @@
 import axios, {isCancel, AxiosError} from 'axios'
 import { selecter } from './index.js'
+
 const BASE_URL = 'https://api.thecatapi.com/v1/breeds';
 const MY_KEY = "live_Bvmmb25LUgn0kerowwQa8P9jXzhxZ7PQweZaoNBCqAfNembGTRKEXQZy885vOj5o";
 const selectVar = document.querySelector(".breed-select");
@@ -8,11 +9,11 @@ const selectVar = document.querySelector(".breed-select");
  function fetchBreeds() {
   
     axios
-    .get(`${BASE_URL}`, {
+    .get(`${BASE_URL}?api-key=${MY_KEY}`, {
     
-      Headers: {
-        'x-api-key': `${MY_KEY}`
-      }
+      // Headers: {
+      //   'x-api-key': `${MY_KEY}`
+      // }
     })
     .then(response => {
         // response.data.map(({id, name, description, temperament}) =>{

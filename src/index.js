@@ -3,29 +3,39 @@ import axios, {isCancel, AxiosError} from 'axios'
 import { BASE_URL, MY_KEY, selectVar, fetchBreeds } from './cat-api.js'
 
 
+import SlimSelect from 'slim-select'
+
+
 // https://api.thecatapi.com/v1/images/search?breed_ids=ідентифікатор_породи
 
 const URL_FOR_INFOCAT = "https://api.thecatapi.com/v1/images/search";
 
 const catHub = document.querySelector(".cat-info");
 const miuD = document.querySelector(".miuDescr");
-// const miuT = document.querySelector(".miuTemper")
-// let dataS = null;
+
+
 
 fetchBreeds()
 
 
 export function selecter (data) {
-  // console.log("4545", data)
   data.map(({id, name}) =>{
-// // додаємо до селекту опції
-// console.log("lknn", data)
-    selectVar.add(new Option(`${name}`, `${id}`))
-        // let mass = {id: `${id}`, name: `${name}`, description: `${description}`, temperament: `${temperament}`}
-        // console.log("tem", `${description}`)
-        return data
-      })
-     console.log(data, "io")
+    // // додаємо до селекту опції
+    selectVar.add(new Option (`${name}`, `${id}`))
+    // console.log("tem", `${description}`)
+    // return data
+  })
+  new SlimSelect({
+    select: selectVar,
+    settings: {
+      placeholderText: 'розпочати котопошук',
+      allowDeselect: true,
+      showSearch: true,
+      searchText:  'котяра не знайден',
+      searchPlaceholder: 'розпочати котопошук',
+      searchHighlight: true    }
+        })
+    //  console.log(data, "io")
 }         
 
 // вантажник
@@ -40,8 +50,7 @@ function onChange (event)
     // let des = event.target
     const vib = selectVar.selectedIndex;
     const opt = selectVar.options
-    // console.log(id, selectVar.value, vib.text
-    // "4654654pppppppppppppp")
+
 
     // console.log(opt[vib], "555555555555555555");****************************************
     console.log(selectVar.value, idBreed,  "na change");
@@ -55,7 +64,7 @@ function onChange (event)
         .then(response => {
             response.data.map(({url, breeds: [{name, description, temperament}]}) =>{
         // додаємо до селекту опції
-        console.log( response.data, description,"ОПИС", temperament, "ТУМП", name)
+        console.log( response.data, description,"ОПИС", temperament, "ТemМП", name)
         catHub.innerHTML = 
         `<div class = "wrapp">
         <h1 class="catName"> ${name}</h1>
@@ -63,11 +72,6 @@ function onChange (event)
        <h3 class="catTemp">${temperament}</h3>
        </div>
        <div class="photoCatWrap"> <img class="catPortret" src="${url}" alt="${name}"</div>`
-
-        //  = `<img src="${url}"  alt="${name}">`
-        //  miuD.textContent = description;
-// console.log(data.description)
-        
                     })
                   })
                   .catch(error => {
@@ -75,14 +79,5 @@ function onChange (event)
                
                   })
         }
-    //     response.data.map(({id, name}) =>{
-    // // додаємо до селекту опції
-    //       return  selectVar.add(new Option(`${name}`,`${id}`))
-    //             })
-    //           })
-    //           .catch(error => {
-    //             alert(error)
-           
-    //           })
-                        
+
 

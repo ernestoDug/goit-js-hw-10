@@ -27,12 +27,10 @@ const loaderVar = document.querySelector('.loaderWrap');
 fetchBreeds();
 
 function selecter(data) {
-  console.log("масив для списку кошаків:", data);
+  console.log('масив для списку кошаків:', data);
   data.map(({ id, name }) => {
-   
     // // додаємо до селекту опції
     selectVar.add(new Option(`${name}`, `${id}`));
-    
   });
   // створення екзепляру селекту бібліотеки
   new SlimSelect({
@@ -45,8 +43,7 @@ function selecter(data) {
       searchHighlight: true,
     },
   });
-
- }
+}
 
 // слухач сеLекта
 selectVar.addEventListener('change', onChange);
@@ -56,10 +53,10 @@ function onChange(event) {
   const idBreed = event.target.value;
 
   // console.log(opt[vib], "555555555555555555");****************************************
-  console.log("ай ді як ев таргет:", idBreed);
-  console.log("ай ді у велью опшин  по кліку:", selectVar.value);
+  console.log('ай ді як ев таргет:', idBreed);
+  console.log('ай ді у велью опшин  по кліку:', selectVar.value);
 
-// виклик функцію створення досьє кота післі запиту
+  // виклик функцію створення досьє кота післі запиту
   fetchCatByBreed(idBreed);
 }
 

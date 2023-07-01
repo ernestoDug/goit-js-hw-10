@@ -44,14 +44,11 @@ function fetchCatByBreed(idBreed) {
   loaderVar.classList.remove('loaderWrap--hidden');
   loaderVar.classList.add('loaderWrap');
   axios
-    .get(
-      `${URL_FOR_INFOCAT}?breed_ids=${idBreed}&api_key=${MY_KEY}`,
-      {
-        params: {
-          has_breeds: 1,
-        },
-      }
-    )
+    .get(`${URL_FOR_INFOCAT}?breed_ids=${idBreed}&api_key=${MY_KEY}`, {
+      params: {
+        has_breeds: 1,
+      },
+    })
 
     .then(response => {
       console.log('айді в ЗЕН після рендеру картки', idBreed);

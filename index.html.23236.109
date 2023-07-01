@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Homework 10</title>
+        <link href="/index.e089ae03.css" rel="stylesheet" type="text/css">
+        <link href="https://unpkg.com/slim-select@latest/dist/slimselect.css" rel="stylesheet">
+
+  </head>
+  <body>
+    <select id="single" class="breed-select"> 
+      
+    </select>
+    <p class="loader">Loading data, please wait...</p>
+    <p class="error">Oops! Something went wrong! Try reloading the page!</p>
+     
+    <div class="cat-info">
+   
+      </div>
+    <script src="/index.5e92c03e.js" defer=""></script>
+ 
+  </body>
+</html>

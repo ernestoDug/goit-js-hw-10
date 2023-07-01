@@ -1,6 +1,6 @@
 import axios, { isCancel, AxiosError } from 'axios';
 
-import { selecter, loaderVar } from './index.js';
+import { selecter, loaderVar, catHub, URL_FOR_INFOCAT } from './index.js';
 
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
@@ -11,9 +11,10 @@ const selectVar = document.querySelector('.breed-select');
 
 // функція  наповнення селекта
 function fetchBreeds() {
-  selectVar.classList.remove("breed-select");
-  selectVar.classList.add("breed-select--hidden");
-
+  // +- класу селекта
+  selectVar.classList.remove('breed-select');
+  selectVar.classList.add('breed-select--hidden');
+  // запит
   axios
     .get(`${BASE_URL}?api-key=${MY_KEY}`, {
       // Headers: {
@@ -21,16 +22,13 @@ function fetchBreeds() {
       // }
     })
     .then(response => {
-      // console.log("из кет в selecter", response.data)
-      selectVar.classList.remove("breed-select--hidden");
-      selectVar.classList.add("breed-select");
-      loaderVar.classList.remove("loaderWrap");
-      loaderVar.classList.add("loaderWrap--hidden");
+      // + - класи лоадера  та списку
+      selectVar.classList.remove('breed-select--hidden');
+      selectVar.classList.add('breed-select');
+      loaderVar.classList.remove('loaderWrap');
+      loaderVar.classList.add('loaderWrap--hidden');
 
-
-      
       return response.data;
-
     })
     .then(selecter)
     .catch(error => {
@@ -38,4 +36,46 @@ function fetchBreeds() {
     });
 }
 
-export { BASE_URL, MY_KEY, selectVar, fetchBreeds };
+// функція примайння айді для запиту досьє котів
+function fetchCatByBreed(idBreed) {
+  // +- класів лоадера та карток
+  catHub.classList.remove('cat-info');
+  catHub.classList.add('cat-info--hidden');
+  loaderVar.classList.remove('loaderWrap--hidden');
+  loaderVar.classList.add('loaderWrap');
+  axios
+    .get(
+      `${URL_FOR_INFOCAT}?breed_ids=${idBreed}&api_key=${MY_KEY}`,
+      {
+        params: {
+          has_breeds: 1,
+        },
+      }
+    )
+
+    .then(response => {
+      console.log('айді в ЗЕН після рендеру картки', idBreed);
+      catHub.classList.remove('cat-info--hidden');
+      catHub.classList.add('cat-info');
+      loaderVar.classList.remove('loaderWrap');
+      loaderVar.classList.add('loaderWrap--hidden');
+      console.log('респонс для картки:', response.data);
+      response.data.map(
+        ({ url, breeds: [{ id, name, description, temperament }] }) => {
+          // додаємо дщсьє кошаків
+          catHub.innerHTML = `<div class = "wrapp">
+        <h1 class="catName"> ${name} </h1>
+       <h2 class="catDescr"> ${description}</h2>
+       <h3 class="catTemp">${temperament}</h3>
+       
+       </div>
+       <div class="photoCatWrap"> <img class="catPortret" src="${url}" alt="${name}"</div>`;
+        }
+      );
+    })
+    .catch(error => {
+      Notify.warning(`❌ Oops! Something went wrong! Try reloading the page!`);
+    });
+}
+
+export { BASE_URL, MY_KEY, selectVar, fetchBreeds, fetchCatByBreed };

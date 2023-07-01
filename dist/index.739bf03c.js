@@ -578,6 +578,8 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "loaderVar", ()=>loaderVar);
 parcelHelpers.export(exports, "selecter", ()=>selecter);
+parcelHelpers.export(exports, "catHub", ()=>catHub);
+parcelHelpers.export(exports, "URL_FOR_INFOCAT", ()=>URL_FOR_INFOCAT);
 var _axios = require("axios");
 var _axiosDefault = parcelHelpers.interopDefault(_axios);
 var _catApiJs = require("./cat-api.js");
@@ -595,26 +597,10 @@ const loaderVar = document.querySelector(".loaderWrap");
 // виклик функції отримання пород
 (0, _catApiJs.fetchBreeds)();
 function selecter(data) {
+    console.log("масив для списку кошаків:", data);
     data.map(({ id, name })=>{
-        //    if(data)
-        // {
-        //   // видаляю хіден селекта
-        // selectVar.classList.add("breed-select");
-        //   // / ящко відповідь
-        //   // прибираю бачимість індикатора
-        //   loaderVar.classList.remove("loaderWrap");
-        //   // додаю хіден індикатор
-        //   loaderVar.classList.add("loaderWrap--hidden");
-        // }
         // // додаємо до селекту опції
         (0, _catApiJs.selectVar).add(new Option(`${name}`, `${id}`));
-    // ящко відповідь поичнаю бачити селект
-    //   // додаю бачимость селекту
-    // return data
-    //  loaderVar.classList.remove("loaderWrap");
-    //  loaderVar.classList.add("loaderWrap--hidden");
-    //  selectVar.classList.add("breed-select")
-    //  selectVar.classList.remove("breed-select--hidden")
     });
     // створення екзепляру селекту бібліотеки
     new (0, _slimSelectDefault.default)({
@@ -627,43 +613,17 @@ function selecter(data) {
             searchHighlight: true
         }
     });
-// selectVar.classList.add("breed-select");
-//  console.log(data, "io");
 }
-// вантажник
-// const gg = document.querySelector('.loader');
 // слухач сеLекта
 (0, _catApiJs.selectVar).addEventListener("change", onChange);
 // обробник селекта
 function onChange(event) {
     const idBreed = event.target.value;
     // console.log(opt[vib], "555555555555555555");****************************************
-    console.log((0, _catApiJs.selectVar).value, idBreed, "na change");
-    fetchCatByBreed(idBreed);
-}
-function fetchCatByBreed(idBreed) {
-    catHub.classList.remove("cat-info");
-    catHub.classList.add("cat-info--hidden");
-    loaderVar.classList.remove("loaderWrap--hidden");
-    loaderVar.classList.add("loaderWrap");
-    (0, _axiosDefault.default).get(`${URL_FOR_INFOCAT}?api_key=${(0, _catApiJs.MY_KEY)}&has_breeds=1&breeds_ids=${idBreed}&sub_id`).then((response)=>{
-        catHub.classList.remove("cat-info--hidden");
-        catHub.classList.add("cat-info");
-        loaderVar.classList.remove("loaderWrap");
-        loaderVar.classList.add("loaderWrap--hidden");
-        response.data.map(({ url, breeds: [{ name, description, temperament }] })=>{
-            // додаємо до селекту опції
-            console.log(response.data, description, "ОПИС", temperament, "ТemМП", name);
-            catHub.innerHTML = `<div class = "wrapp">
-        <h1 class="catName"> ${name}</h1>
-       <h2 class="catDescr"> ${description}</h2>
-       <h3 class="catTemp">${temperament}</h3>
-       </div>
-       <div class="photoCatWrap"> <img class="catPortret" src="${url}" alt="${name}"</div>`;
-        });
-    }).catch((error)=>{
-        (0, _notiflixNotifyAio.Notify).warning(`❌ Oops! Something went wrong! Try reloading the page!`);
-    });
+    console.log("ай ді як ев таргет:", idBreed);
+    console.log("ай ді у велью опшин  по кліку:", (0, _catApiJs.selectVar).value);
+    // виклик функцію створення досьє кота післі запиту
+    (0, _catApiJs.fetchCatByBreed)(idBreed);
 }
 
 },{"axios":"jo6P5","./cat-api.js":"5IWAT","slim-select":"lzHUr","notiflix/build/notiflix-notify-aio":"eXQLZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jo6P5":[function(require,module,exports) {
@@ -3431,6 +3391,7 @@ parcelHelpers.export(exports, "BASE_URL", ()=>BASE_URL);
 parcelHelpers.export(exports, "MY_KEY", ()=>MY_KEY);
 parcelHelpers.export(exports, "selectVar", ()=>selectVar);
 parcelHelpers.export(exports, "fetchBreeds", ()=>fetchBreeds);
+parcelHelpers.export(exports, "fetchCatByBreed", ()=>fetchCatByBreed);
 var _axios = require("axios");
 var _axiosDefault = parcelHelpers.interopDefault(_axios);
 var _indexJs = require("./index.js");
@@ -3440,17 +3401,51 @@ const MY_KEY = "live_Bvmmb25LUgn0kerowwQa8P9jXzhxZ7PQweZaoNBCqAfNembGTRKEXQZy885
 const selectVar = document.querySelector(".breed-select");
 // функція  наповнення селекта
 function fetchBreeds() {
+    // +- класу селекта
     selectVar.classList.remove("breed-select");
     selectVar.classList.add("breed-select--hidden");
+    // запит
     (0, _axiosDefault.default).get(`${BASE_URL}?api-key=${MY_KEY}`, {
     }).then((response)=>{
-        // console.log("из кет в selecter", response.data)
+        // + - класи лоадера  та списку
         selectVar.classList.remove("breed-select--hidden");
         selectVar.classList.add("breed-select");
         (0, _indexJs.loaderVar).classList.remove("loaderWrap");
         (0, _indexJs.loaderVar).classList.add("loaderWrap--hidden");
         return response.data;
     }).then((0, _indexJs.selecter)).catch((error)=>{
+        (0, _notiflixNotifyAio.Notify).warning(`❌ Oops! Something went wrong! Try reloading the page!`);
+    });
+}
+// функція примайння айді для запиту досьє котів
+function fetchCatByBreed(idBreed) {
+    // +- класів лоадера та карток
+    (0, _indexJs.catHub).classList.remove("cat-info");
+    (0, _indexJs.catHub).classList.add("cat-info--hidden");
+    (0, _indexJs.loaderVar).classList.remove("loaderWrap--hidden");
+    (0, _indexJs.loaderVar).classList.add("loaderWrap");
+    (0, _axiosDefault.default).get(`${(0, _indexJs.URL_FOR_INFOCAT)}?breed_ids=${idBreed}&api_key=${MY_KEY}`, {
+        params: {
+            has_breeds: 1
+        }
+    }).then((response)=>{
+        console.log("айді в ЗЕН після рендеру картки", idBreed);
+        (0, _indexJs.catHub).classList.remove("cat-info--hidden");
+        (0, _indexJs.catHub).classList.add("cat-info");
+        (0, _indexJs.loaderVar).classList.remove("loaderWrap");
+        (0, _indexJs.loaderVar).classList.add("loaderWrap--hidden");
+        console.log("респонс для картки:", response.data);
+        response.data.map(({ url, breeds: [{ id, name, description, temperament }] })=>{
+            // додаємо дщсьє кошаків
+            (0, _indexJs.catHub).innerHTML = `<div class = "wrapp">
+        <h1 class="catName"> ${name} </h1>
+       <h2 class="catDescr"> ${description}</h2>
+       <h3 class="catTemp">${temperament}</h3>
+       
+       </div>
+       <div class="photoCatWrap"> <img class="catPortret" src="${url}" alt="${name}"</div>`;
+        });
+    }).catch((error)=>{
         (0, _notiflixNotifyAio.Notify).warning(`❌ Oops! Something went wrong! Try reloading the page!`);
     });
 }

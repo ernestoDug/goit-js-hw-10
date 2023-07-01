@@ -17,32 +17,28 @@ const miuD = document.querySelector('.miuDescr');
 // для індикатору завантаження
 const loaderVar = document.querySelector('.loaderWrap');
 
-// // селект не бачу
-// selectVar.classList.add("breed-select--hidden");
-// // індикатор бачу
-// loaderVar.classList.add("loaderWrap");
 
 // виклик функції отримання пород
 fetchBreeds();
 
 function selecter(data) {
+
   data.map(({ id, name }) => {
     //    if(data)
     // {
-    //   // ящко відповідь поичнаю бачити селект
-    //   // видаляю хіден селекта
-    //   selectVar.classList.remove("breed-select--hidden")
-    //   // додаю бачимость селекту
-    //   selectVar.classList.add("breed-select")
-    //   // / ящко відповідь
-    //   // прибираю бачимість індикатора
-    //   loaderVar.classList.remove("loaderWrap");
-    //   // додаю хіден індикатор
-    //   loaderVar.classList.add("loaderWrap--hidden");
-    // }
-
-    // // додаємо до селекту опції
-    selectVar.add(new Option(`${name}`, `${id}`));
+      //   // видаляю хіден селекта
+      // selectVar.classList.add("breed-select");
+      //   // / ящко відповідь
+      //   // прибираю бачимість індикатора
+      //   loaderVar.classList.remove("loaderWrap");
+      //   // додаю хіден індикатор
+      //   loaderVar.classList.add("loaderWrap--hidden");
+      // }
+      
+      // // додаємо до селекту опції
+      selectVar.add(new Option(`${name}`, `${id}`));
+      // ящко відповідь поичнаю бачити селект
+      //   // додаю бачимость селекту
     // return data
     //  loaderVar.classList.remove("loaderWrap");
     //  loaderVar.classList.add("loaderWrap--hidden");
@@ -60,21 +56,19 @@ function selecter(data) {
       searchHighlight: true,
     },
   });
-
-  //  console.log(data, "io")
+  
+  // selectVar.classList.add("breed-select");
+  //  console.log(data, "io");
 }
 
 // вантажник
-const gg = document.querySelector('.loader');
+// const gg = document.querySelector('.loader');
 // слухач сеLекта
 selectVar.addEventListener('change', onChange);
 
 // обробник селекта
 function onChange(event) {
   const idBreed = event.target.value;
-  // let des = event.target
-  const vib = selectVar.selectedIndex;
-  const opt = selectVar.options;
 
   // console.log(opt[vib], "555555555555555555");****************************************
   console.log(selectVar.value, idBreed, 'na change');
@@ -82,12 +76,22 @@ function onChange(event) {
   fetchCatByBreed(idBreed);
 }
 function fetchCatByBreed(idBreed) {
+  catHub.classList.remove("cat-info");
+  catHub.classList.add("cat-info--hidden");
+  loaderVar.classList.remove("loaderWrap--hidden");
+  loaderVar.classList.add("loaderWrap");
   axios
+
+
     .get(
       `${URL_FOR_INFOCAT}?api_key=${MY_KEY}&has_breeds=1&breeds_ids=${idBreed}&sub_id`
     )
 
     .then(response => {
+      catHub.classList.remove("cat-info--hidden");
+      catHub.classList.add("cat-info");
+      loaderVar.classList.remove("loaderWrap");
+      loaderVar.classList.add("loaderWrap--hidden");
       response.data.map(
         ({ url, breeds: [{ name, description, temperament }] }) => {
           // додаємо до селекту опції

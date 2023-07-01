@@ -11,6 +11,9 @@ const selectVar = document.querySelector('.breed-select');
 
 // функція  наповнення селекта
 function fetchBreeds() {
+  selectVar.classList.remove("breed-select");
+  selectVar.classList.add("breed-select--hidden");
+
   axios
     .get(`${BASE_URL}?api-key=${MY_KEY}`, {
       // Headers: {
@@ -19,8 +22,15 @@ function fetchBreeds() {
     })
     .then(response => {
       // console.log("из кет в selecter", response.data)
+      selectVar.classList.remove("breed-select--hidden");
+      selectVar.classList.add("breed-select");
+      loaderVar.classList.remove("loaderWrap");
+      loaderVar.classList.add("loaderWrap--hidden");
 
+
+      
       return response.data;
+
     })
     .then(selecter)
     .catch(error => {

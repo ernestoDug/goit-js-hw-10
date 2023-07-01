@@ -1,0 +1,159 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-image: url("https://phonoteka.org/uploads/posts/2021-04/1619246733_54-phonoteka_org-p-yegipetskii-fon-56.jpg");
+  background-size: cover;
+}
+
+.breed-select {
+  border-radius: 30px 15px 15px 30px;
+  transition: background-color, all linear, all 5s;
+}
+
+.breed-select:hover {
+  background-color: #e8c8ac;
+}
+
+.wrapp {
+  flex-direction: column;
+  width: 500px;
+  margin-top: 50px;
+  margin-left: 20px;
+  display: flex;
+}
+
+.cat-info {
+  justify-content: space-around;
+  display: flex;
+}
+
+.catPortret {
+  box-shadow: 9px 21px 9px rgba(#dbcece, .1);
+  background: #e8c8ac;
+  border-radius: 90px 150px;
+  width: 450px;
+  height: 600px;
+  margin: 1rem auto 1.6%;
+  overflow: hidden;
+  transform: skewX(-2deg);
+}
+
+.photoCatWrap {
+  background-position: center;
+  background-size: cover;
+  width: 500px;
+  inset: 0;
+}
+
+.catDescr {
+  background: #e8c8ac;
+  border-radius: 9px 6px;
+  margin-left: 35px;
+  margin-right: 35px;
+  padding: 1rem;
+}
+
+.catName, .catTemp {
+  font-family: Poppins, sans-serif;
+}
+
+.catName {
+  text-align: center;
+  background: #e8c8ac;
+  border-radius: 9px 6px;
+  margin: 0;
+  font-size: 1.7rem;
+  line-height: 1;
+}
+
+.catTemp {
+  text-transform: uppercase;
+  color: grey_dark;
+  text-align: center;
+  background: #e8c8ac;
+  border-radius: 7px 5px;
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.loaderWrap {
+  margin-top: 200px;
+  margin-left: 50%;
+}
+
+.loaderWrap--hidden, .breed-select--hidden, .cat-info--hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  white-space: nowrap;
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  border: 0;
+  padding: 0;
+  display: none;
+  overflow: hidden;
+}
+
+.loader {
+  width: 120px;
+  height: 90px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.loader:before {
+  content: "";
+  background: #ff3d00;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: .5s ease-in-out infinite alternate loading-bounce;
+  position: absolute;
+  bottom: 30px;
+  left: 50px;
+}
+
+.loader:after {
+  content: "";
+  border-radius: 4px;
+  width: 45px;
+  height: 7px;
+  animation: 1s ease-in-out infinite loading-step;
+  position: absolute;
+  top: 0;
+  right: 0;
+  box-shadow: 0 5px #fff, -35px 50px #fff, -70px 95px #fff;
+}
+
+@keyframes loading-bounce {
+  0% {
+    transform: scale(1, .7);
+  }
+
+  40% {
+    transform: scale(.8, 1.2);
+  }
+
+  60% {
+    transform: scale(1);
+  }
+
+  100% {
+    bottom: 140px;
+  }
+}
+
+@keyframes loading-step {
+  0% {
+    box-shadow: 0 10px #0000, 0 10px #fff, -35px 50px #fff, -70px 90px #fff;
+  }
+
+  100% {
+    box-shadow: 0 10px #fff, -35px 50px #fff, -70px 90px #fff, -70px 90px #0000;
+  }
+}
+
+/*# sourceMappingURL=index.c92073ef.css.map */

@@ -80,10 +80,14 @@ body {
 
 /* *************************
           */
+
+/* коробка вантажника індикатора */
 .loaderWrap {
   margin-left: 50%;
   margin-top: 200px;
 }
+
+/* невидимі класи */
 .loaderWrap--hidden,
 .breed-select--hidden,
 .cat-info--hidden {
@@ -99,7 +103,7 @@ body {
   clip: rect(0 0 0 0);
   overflow: hidden;
 }
-/* бігунок */
+/* індикатор та його анімашки */
 .loader {
   position: relative;
   width: 120px;

@@ -22,7 +22,7 @@ function fetchBreeds() {
       // }
     })
     .then(response => {
-      // + - класи лоадера  та списку
+      // + - класи лоадера  та селекту
       selectVar.classList.remove('breed-select--hidden');
       selectVar.classList.add('breed-select');
       loaderVar.classList.remove('loaderWrap');
@@ -32,7 +32,12 @@ function fetchBreeds() {
     })
     .then(selecter)
     .catch(error => {
-      Notify.warning(`❌ Oops! Something went wrong! Try reloading the page!`);
+      Notify.warning(`❌ ОТАКОЇ, КОШАКИ  РОЗБІГЛИСЯ`);
+      // **********************************************************************
+      // ЯЩО ПОТРІБНО ЩОБ ВАНТАЖНИК БУВ при момилці ************************************************
+      // loaderVar.classList.remove('loaderWrap');
+      // loaderVar.classList.add('loaderWrap--hidden');
+      // ************************************************************************************************
     });
 }
 
@@ -51,12 +56,12 @@ function fetchCatByBreed(idBreed) {
     })
 
     .then(response => {
-      console.log('айді в ЗЕН після рендеру картки', idBreed);
+      // +- КЛАСИ ЛОАДЕРА ТА КАРТОК
       catHub.classList.remove('cat-info--hidden');
       catHub.classList.add('cat-info');
       loaderVar.classList.remove('loaderWrap');
       loaderVar.classList.add('loaderWrap--hidden');
-      console.log('респонс для картки:', response.data);
+      // console.log('респонс для картки:', response.data);
       response.data.map(
         ({ url, breeds: [{ id, name, description, temperament }] }) => {
           // додаємо дщсьє кошаків
@@ -71,7 +76,12 @@ function fetchCatByBreed(idBreed) {
       );
     })
     .catch(error => {
-      Notify.warning(`❌ Oops! Something went wrong! Try reloading the page!`);
+      Notify.warning(`❌ ОТАКОЇ, КОШАКИ РОЗБІГЛИСЯ`);
+      // / **********************************************************************
+      // ЯЩО ПОТРІБНО ЩОБ ВАНТАЖНИК БУВ при момилці 2 ************************************************
+      // loaderVar.classList.remove('loaderWrap');
+      // loaderVar.classList.add('loaderWrap--hidden');
+      // ************************************************************************************************
     });
 }
 

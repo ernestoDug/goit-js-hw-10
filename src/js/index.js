@@ -23,11 +23,21 @@ const miuD = document.querySelector('.miuDescr');
 // для індикатору завантаження
 const loaderVar = document.querySelector('.loaderWrap');
 
+// +- класу селекта
+selectVar.classList.remove('breed-select');
+selectVar.classList.add('breed-select--hidden');
+
 // виклик функції отримання пород
 fetchBreeds();
 
+// функція списку
 function selecter(data) {
   // console.log('масив для списку кошаків:', data);
+  // + - класи лоадера  та селекту
+  selectVar.classList.remove('breed-select--hidden');
+  selectVar.classList.add('breed-select');
+  loaderVar.classList.remove('loaderWrap');
+  loaderVar.classList.add('loaderWrap--hidden');
   data.map(({ id, name }) => {
     // // додаємо до селекту опції
     selectVar.add(new Option(`${name}`, `${id}`));
@@ -52,8 +62,36 @@ selectVar.addEventListener('change', onChange);
 function onChange(event) {
   const idBreed = event.target.value;
 
-  // виклик функцію створення досьє кота післz запиту
+  // виклик функції запиту ай ді
+  // +- класів лоадера та карток
+  catHub.classList.remove('cat-info');
+  catHub.classList.add('cat-info--hidden');
+  loaderVar.classList.remove('loaderWrap--hidden');
+  loaderVar.classList.add('loaderWrap');
   fetchCatByBreed(idBreed);
 }
 
-export { loaderVar, selecter, catHub, URL_FOR_INFOCAT };
+// функція для карток досьє
+
+function catDos(response) {
+  // +- КЛАСИ ЛОАДЕРА ТА КАРТОК
+  catHub.classList.remove('cat-info--hidden');
+  catHub.classList.add('cat-info');
+  loaderVar.classList.remove('loaderWrap');
+  loaderVar.classList.add('loaderWrap--hidden');
+  // console.log('респонс для картки:', response.data);
+  response.data.map(
+    ({ url, breeds: [{ id, name, description, temperament }] }) => {
+      // додаємо дщсьє кошаків
+      catHub.innerHTML = `<div class = "wrapp">
+      <h1 class="catName"> ${name} </h1>
+     <h2 class="catDescr"> ${description}</h2>
+     <h3 class="catTemp">${temperament}</h3>
+     
+     </div>
+     <div class="photoCatWrap"> <img class="catPortret" src="${url}" alt="${name}"</div>`;
+    }
+  );
+}
+
+export { loaderVar, selecter, catHub, URL_FOR_INFOCAT, catDos };

@@ -580,6 +580,7 @@ parcelHelpers.export(exports, "loaderVar", ()=>loaderVar);
 parcelHelpers.export(exports, "selecter", ()=>selecter);
 parcelHelpers.export(exports, "catHub", ()=>catHub);
 parcelHelpers.export(exports, "URL_FOR_INFOCAT", ()=>URL_FOR_INFOCAT);
+parcelHelpers.export(exports, "catDos", ()=>catDos);
 var _axios = require("axios");
 var _axiosDefault = parcelHelpers.interopDefault(_axios);
 var _catApiJs = require("./cat-api.js");
@@ -594,10 +595,19 @@ const catHub = document.querySelector(".cat-info");
 const miuD = document.querySelector(".miuDescr");
 // для індикатору завантаження
 const loaderVar = document.querySelector(".loaderWrap");
+// +- класу селекта
+(0, _catApiJs.selectVar).classList.remove("breed-select");
+(0, _catApiJs.selectVar).classList.add("breed-select--hidden");
 // виклик функції отримання пород
 (0, _catApiJs.fetchBreeds)();
+// функція списку
 function selecter(data) {
     // console.log('масив для списку кошаків:', data);
+    // + - класи лоадера  та селекту
+    (0, _catApiJs.selectVar).classList.remove("breed-select--hidden");
+    (0, _catApiJs.selectVar).classList.add("breed-select");
+    loaderVar.classList.remove("loaderWrap");
+    loaderVar.classList.add("loaderWrap--hidden");
     data.map(({ id, name })=>{
         // // додаємо до селекту опції
         (0, _catApiJs.selectVar).add(new Option(`${name}`, `${id}`));
@@ -619,8 +629,32 @@ function selecter(data) {
 // обробник селекта
 function onChange(event) {
     const idBreed = event.target.value;
-    // виклик функцію створення досьє кота післz запиту
+    // виклик функції запиту ай ді
+    // +- класів лоадера та карток
+    catHub.classList.remove("cat-info");
+    catHub.classList.add("cat-info--hidden");
+    loaderVar.classList.remove("loaderWrap--hidden");
+    loaderVar.classList.add("loaderWrap");
     (0, _catApiJs.fetchCatByBreed)(idBreed);
+}
+// функція для карток досьє
+function catDos(response) {
+    // +- КЛАСИ ЛОАДЕРА ТА КАРТОК
+    catHub.classList.remove("cat-info--hidden");
+    catHub.classList.add("cat-info");
+    loaderVar.classList.remove("loaderWrap");
+    loaderVar.classList.add("loaderWrap--hidden");
+    // console.log('респонс для картки:', response.data);
+    response.data.map(({ url, breeds: [{ id, name, description, temperament }] })=>{
+        // додаємо дщсьє кошаків
+        catHub.innerHTML = `<div class = "wrapp">
+      <h1 class="catName"> ${name} </h1>
+     <h2 class="catDescr"> ${description}</h2>
+     <h3 class="catTemp">${temperament}</h3>
+     
+     </div>
+     <div class="photoCatWrap"> <img class="catPortret" src="${url}" alt="${name}"</div>`;
+    });
 }
 
 },{"axios":"jo6P5","./cat-api.js":"5IWAT","slim-select":"lzHUr","notiflix/build/notiflix-notify-aio":"eXQLZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jo6P5":[function(require,module,exports) {
@@ -3398,17 +3432,9 @@ const MY_KEY = "live_Bvmmb25LUgn0kerowwQa8P9jXzhxZ7PQweZaoNBCqAfNembGTRKEXQZy885
 const selectVar = document.querySelector(".breed-select");
 // функція  наповнення селекта
 function fetchBreeds() {
-    // +- класу селекта
-    selectVar.classList.remove("breed-select");
-    selectVar.classList.add("breed-select--hidden");
     // запит
     (0, _axiosDefault.default).get(`${BASE_URL}?api-key=${MY_KEY}`, {
     }).then((response)=>{
-        // + - класи лоадера  та селекту
-        selectVar.classList.remove("breed-select--hidden");
-        selectVar.classList.add("breed-select");
-        (0, _indexJs.loaderVar).classList.remove("loaderWrap");
-        (0, _indexJs.loaderVar).classList.add("loaderWrap--hidden");
         return response.data;
     }).then((0, _indexJs.selecter)).catch((error)=>{
         (0, _notiflixNotifyAio.Notify).warning(`❌ ОТАКОЇ, КОШАКИ  РОЗБІГЛИСЯ`);
@@ -3421,33 +3447,11 @@ function fetchBreeds() {
 }
 // функція примайння айді для запиту досьє котів
 function fetchCatByBreed(idBreed) {
-    // +- класів лоадера та карток
-    (0, _indexJs.catHub).classList.remove("cat-info");
-    (0, _indexJs.catHub).classList.add("cat-info--hidden");
-    (0, _indexJs.loaderVar).classList.remove("loaderWrap--hidden");
-    (0, _indexJs.loaderVar).classList.add("loaderWrap");
     (0, _axiosDefault.default).get(`${(0, _indexJs.URL_FOR_INFOCAT)}?breed_ids=${idBreed}&api_key=${MY_KEY}`, {
         params: {
             has_breeds: 1
         }
-    }).then((response)=>{
-        // +- КЛАСИ ЛОАДЕРА ТА КАРТОК
-        (0, _indexJs.catHub).classList.remove("cat-info--hidden");
-        (0, _indexJs.catHub).classList.add("cat-info");
-        (0, _indexJs.loaderVar).classList.remove("loaderWrap");
-        (0, _indexJs.loaderVar).classList.add("loaderWrap--hidden");
-        // console.log('респонс для картки:', response.data);
-        response.data.map(({ url, breeds: [{ id, name, description, temperament }] })=>{
-            // додаємо дщсьє кошаків
-            (0, _indexJs.catHub).innerHTML = `<div class = "wrapp">
-        <h1 class="catName"> ${name} </h1>
-       <h2 class="catDescr"> ${description}</h2>
-       <h3 class="catTemp">${temperament}</h3>
-       
-       </div>
-       <div class="photoCatWrap"> <img class="catPortret" src="${url}" alt="${name}"</div>`;
-        });
-    }).catch((error)=>{
+    }).then((0, _indexJs.catDos)).catch((error)=>{
         (0, _notiflixNotifyAio.Notify).warning(`❌ ОТАКОЇ, КОШАКИ РОЗБІГЛИСЯ`);
     // / **********************************************************************
     // ЯЩО ПОТРІБНО ЩОБ ВАНТАЖНИК БУВ при момилці 2 ************************************************
